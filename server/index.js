@@ -78,7 +78,7 @@ app.post("/", async (req, res) => {
   const user = await Users.findOne({ Email });
 
   if (!user) {
-    return res.send(`No user exists with email ${Email}`);
+    return res.status(404).send(`No user exists with email ${Email}`);
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
@@ -89,7 +89,7 @@ app.post("/", async (req, res) => {
     });
     res.json(token);
   } else {
-    res.send("password do not matches");
+    res.status(404).send("password do not matches");
   }
 });
 
@@ -98,7 +98,7 @@ app.post("/signup", async (req, res) => {
  
   const user = await Users.findOne({ Email });
   if (user) {
-    return res.send(`User already exists with email ${Email}`);
+    return res.status(404).send(`User already exists with email ${Email}`);
   }
 
   const hash = await bcrypt.hash(password, 10);
